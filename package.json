@@ -1,9 +1,47 @@
 {
-  "name": "psychology-power",
+  "name": "psychology-of-power",
   "version": "1.0.0",
-  "description": "Psychology of Power - PWA App",
+  "description": "PWA додаток для захисту прав водіїв",
   "main": "index.html",
+  "type": "module",
   "scripts": {
-    "build": "mkdir -p dist && cp index.html dist/ && echo 'Build complete - files copied to dist'"
+    "start": "vite --host",
+    "dev": "vite --host",
+    "dev:local": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "build:vercel": "vite build --mode production",
+    "preview": "vite preview --host",
+    "serve": "serve dist",
+    "deploy:vercel": "npm run build:vercel && vercel --prod",
+    "test:ios": "vite --host && echo 'iPhone: відкрийте Safari та перейдіть на http://192.168.192.20:3000'",
+    "test:windows": "vite --host && echo 'Windows: відкрийте Chrome/Edge та перейдіть на http://localhost:3000'",
+    "setup:cross-platform": "echo '1. Запустіть: npm run dev' && echo '2. IP адреса: 192.168.192.20' && echo '3. iPhone: Safari → http://192.168.192.20:3000' && echo '4. Windows: Chrome → http://localhost:3000'"
+  },
+  "keywords": [
+    "pwa",
+    "driver",
+    "rights",
+    "police",
+    "evidence",
+    "video",
+    "camera",
+    "ukraine"
+  ],
+  "author": "Psychology of Power Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@vitejs/plugin-legacy": "^5.4.1",
+    "vite": "^5.3.4",
+    "vite-plugin-pwa": "^0.20.5",
+    "workbox-window": "^7.1.0"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "idb": "^8.0.0",
+    "lucide-react": "^0.400.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.24.0",
+    "serve": "^14.2.1"
   }
 }
