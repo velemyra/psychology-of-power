@@ -7,10 +7,10 @@ const DB_VERSION = 1
 // Fallback to localStorage if IndexedDB fails
 const useLocalStorage = () => {
   try {
-    // Test IndexedDB support
-    return !window.indexedDB || typeof window.indexedDB !== 'object'
+    // Always use localStorage for now to avoid IndexedDB issues
+    return true
   } catch (error) {
-    console.log('IndexedDB not available, using localStorage fallback')
+    console.log('Using localStorage fallback')
     return true
   }
 }

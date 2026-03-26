@@ -21,12 +21,23 @@ function App() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Initialize database
-    initDB()
+    // Initialize database with error handling
+    try {
+      initDB().catch(error => {
+        console.log('DB initialization failed, using fallback:', error)
+      })
+    } catch (error) {
+      console.log('DB error caught:', error)
+    }
     
-    // Check subscription status
-    const subscription = checkSubscription()
-    setUserSubscription(subscription)
+    // Check subscription status with error handling
+    try {
+      const subscription = checkSubscription()
+      setUserSubscription(subscription)
+    } catch (error) {
+      console.log('Subscription check failed:', error)
+      setUserSubscription({ plan: 'free', status: 'active' })
+    }
     
     // Online/offline detection
     const handleOnline = () => setIsOnline(true)
