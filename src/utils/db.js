@@ -4,6 +4,78 @@ import { openDB, deleteDB } from 'idb'
 const DB_NAME = 'PsychologyOfPowerDB'
 const DB_VERSION = 1
 
+// Fallback to localStorage if IndexedDB fails
+const useLocalStorage = () => {
+  try {
+    // Test IndexedDB support
+    return !window.indexedDB || typeof window.indexedDB !== 'object'
+  } catch (error) {
+    console.log('IndexedDB not available, using localStorage fallback')
+    return true
+  }
+}
+
+// LocalStorage operations
+const localStorageDB = {
+  incidents: {
+    add: (incident) => {
+      try {
+        const incidents = JSON.parse(localStorage.getItem('incidents') || '[]')
+        incidents.push(incident)
+        localStorage.setItem('incidents', JSON.stringify(incidents))
+        return Promise.resolve(incident)
+      } catch (error) {
+        console.error('LocalStorage add error:', error)
+        return Promise.reject(error)
+      }
+    },
+    getAll: () => {
+      try {
+        const incidents = JSON.parse(localStorage.getItem('incidents') || '[]')
+        return Promise.resolve(incidents)
+      } catch (error) {
+        console.error('LocalStorage getAll error:', error)
+        return Promise.reject(error)
+      }
+    },
+    getById: (id) => {
+      try {
+        const incidents = JSON.parse(localStorage.getItem('incidents') || '[]')
+        const incident = incidents.find(i => i.id === id)
+        return Promise.resolve(incident)
+      } catch (error) {
+        console.error('LocalStorage getById error:', error)
+        return Promise.reject(error)
+      }
+    },
+    update: (incident) => {
+      try {
+        const incidents = JSON.parse(localStorage.getItem('incidents') || '[]')
+        const index = incidents.findIndex(i => i.id === incident.id)
+        if (index !== -1) {
+          incidents[index] = incident
+          localStorage.setItem('incidents', JSON.stringify(incidents))
+        }
+        return Promise.resolve(incident)
+      } catch (error) {
+        console.error('LocalStorage update error:', error)
+        return Promise.reject(error)
+      }
+    },
+    delete: (id) => {
+      try {
+        const incidents = JSON.parse(localStorage.getItem('incidents') || '[]')
+        const filtered = incidents.filter(i => i.id !== id)
+        localStorage.setItem('incidents', JSON.stringify(filtered))
+        return Promise.resolve()
+      } catch (error) {
+        console.error('LocalStorage delete error:', error)
+        return Promise.reject(error)
+      }
+    }
+  }
+}
+
 // Database schema
 const STORES = {
   incidents: 'incidents',
@@ -92,14 +164,29 @@ export const getDB = async () => {
 export const incidentsDB = {
   // Add new incident
   async add(incident) {
-    const db = await getDB()
-    const tx = db.transaction(STORES.incidents, 'readwrite')
-    const store = tx.objectStore(STORES.incidents)
-    return await store.add(incident)
+    if (useLocalStorage()) {
+      console.log('Using localStorage for add')
+      return await localStorageDB.incidents.add(incident)
+    }
+    
+    try {
+      const db = await getDB()
+      const tx = db.transaction(STORES.incidents, 'readwrite')
+      const store = tx.objectStore(STORES.incidents)
+      return await store.add(incident)
+    } catch (error) {
+      console.error('IndexedDB add failed, using localStorage:', error)
+      return await localStorageDB.incidents.add(incident)
+    }
   },
 
   // Get all incidents
   async getAll() {
+    if (useLocalStorage()) {
+      console.log('Using localStorage for getAll')
+      return await localStorageDB.incidents.getAll()
+    }
+    
     try {
       const db = await getDB()
       const tx = db.transaction(STORES.incidents, 'readonly')
@@ -108,8 +195,8 @@ export const incidentsDB = {
       console.log('incidentsDB.getAll() result:', incidents)
       return incidents
     } catch (error) {
-      console.error('Error in incidentsDB.getAll():', error)
-      throw error
+      console.error('IndexedDB getAll failed, using localStorage:', error)
+      return await localStorageDB.incidents.getAll()
     }
   },
 
