@@ -25,10 +25,40 @@ const Incidents = ({ userSubscription }) => {
   const loadIncidents = async () => {
     try {
       setLoading(true)
+      
+      // First try to initialize database
+      const { initDB } = await import('../utils/db')
+      await initDB()
+      
       const allIncidents = await incidentsDB.getAll()
-      setIncidents(allIncidents.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)))
+      console.log('Loaded incidents:', allIncidents)
+      setIncidents(allIncidents.sort((a, b) => new Date(b.timestamp || b.date) - new Date(a.timestamp || b.date)))
     } catch (error) {
       console.error('Error loading incidents:', error)
+      
+      // Try fallback method
+      try {
+        console.log('Trying fallback loading...')
+        const request = indexedDB.open('PsychologyOfPowerDB_Fallback', 1)
+        
+        request.onsuccess = async (event) => {
+          const db = event.target.result
+          const tx = db.transaction(['incidents'], 'readonly')
+          const store = tx.objectStore('incidents')
+          const incidents = await store.getAll()
+          
+          console.log('Fallback loaded incidents:', incidents)
+          setIncidents(incidents.sort((a, b) => new Date(b.timestamp || b.date) - new Date(a.timestamp || b.date)))
+          setLoading(false)
+        }
+        
+        request.onerror = (error) => {
+          console.error('Fallback loading failed:', error)
+          setLoading(false)
+        }
+      } catch (fallbackError) {
+        console.error('Fallback error:', fallbackError)
+      }
     } finally {
       setLoading(false)
     }

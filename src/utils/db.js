@@ -100,8 +100,17 @@ export const incidentsDB = {
 
   // Get all incidents
   async getAll() {
-    const db = await getDB()
-    return await db.getAll(STORES.incidents)
+    try {
+      const db = await getDB()
+      const tx = db.transaction(STORES.incidents, 'readonly')
+      const store = tx.objectStore(STORES.incidents)
+      const incidents = await store.getAll()
+      console.log('incidentsDB.getAll() result:', incidents)
+      return incidents
+    } catch (error) {
+      console.error('Error in incidentsDB.getAll():', error)
+      throw error
+    }
   },
 
   // Get incident by ID
