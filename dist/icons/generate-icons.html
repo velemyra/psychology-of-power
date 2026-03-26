@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate App Icons</title>
+</head>
+<body>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        
+        async function generateIcons() {
+            for (const size of sizes) {
+                canvas.width = size;
+                canvas.height = size;
+                
+                // Draw background circle
+                const gradient = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+                gradient.addColorStop(0, '#DC143C');
+                gradient.addColorStop(1, '#8B0000');
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(size/2, size/2, size/2 - 4, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Draw gold border
+                ctx.strokeStyle = '#DAA520';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.arc(size/2, size/2, size/2 - 6, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Draw shield
+                const shieldSize = size * 0.6;
+                const shieldX = size/2 - shieldSize/2;
+                const shieldY = size * 0.15;
+                
+                ctx.fillStyle = '#DAA520';
+                ctx.strokeStyle = '#DC143C';
+                ctx.lineWidth = 2;
+                
+                // Shield path
+                ctx.beginPath();
+                ctx.moveTo(size/2, shieldY);
+                ctx.lineTo(shieldX + shieldSize, shieldY + shieldSize * 0.3);
+                ctx.lineTo(shieldX + shieldSize, shieldY + shieldSize * 0.8);
+                ctx.lineTo(size/2, shieldY + shieldSize);
+                ctx.lineTo(shieldX, shieldY + shieldSize * 0.8);
+                ctx.lineTo(shieldX, shieldY + shieldSize * 0.3);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+                
+                // Draw hammer
+                const hammerSize = size * 0.15;
+                const hammerX = size * 0.35;
+                const hammerY = size * 0.45;
+                
+                // Hammer handle
+                ctx.fillStyle = '#8B4513';
+                ctx.fillRect(hammerX + hammerSize * 0.7, hammerY, hammerSize * 0.15, hammerSize * 0.8);
+                
+                // Hammer head
+                ctx.fillStyle = '#DAA520';
+                ctx.fillRect(hammerX, hammerY - hammerSize * 0.1, hammerSize * 0.8, hammerSize * 0.3);
+                ctx.strokeStyle = '#DC143C';
+                ctx.strokeRect(hammerX, hammerY - hammerSize * 0.1, hammerSize * 0.8, hammerSize * 0.3);
+                
+                // Draw axe
+                const axeX = size * 0.55;
+                const axeY = size * 0.45;
+                
+                // Axe handle
+                ctx.fillStyle = '#8B4513';
+                ctx.fillRect(axeX + hammerSize * 0.7, axeY, hammerSize * 0.15, hammerSize * 0.8);
+                
+                // Axe blade
+                ctx.fillStyle = '#DAA520';
+                ctx.beginPath();
+                ctx.moveTo(axeX, axeY - hammerSize * 0.1);
+                ctx.lineTo(axeX + hammerSize * 0.8, axeY - hammerSize * 0.1);
+                ctx.lineTo(axeX + hammerSize, axeY + hammerSize * 0.2);
+                ctx.lineTo(axeX + hammerSize * 0.8, axeY + hammerSize * 0.3);
+                ctx.lineTo(axeX, axeY + hammerSize * 0.3);
+                ctx.lineTo(axeX - hammerSize * 0.2, axeY + hammerSize * 0.2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+                
+                // Draw center emblem
+                ctx.fillStyle = '#DC143C';
+                ctx.beginPath();
+                ctx.arc(size/2, size * 0.75, size * 0.08, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#DAA520';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                // Draw text
+                ctx.fillStyle = '#DAA520';
+                ctx.font = `bold ${size * 0.06}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('ПС', size/2, size * 0.75);
+                
+                // Download the icon
+                canvas.toBlob(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `icon-${size}x${size}.png`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                });
+                
+                // Wait a bit between downloads
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+        }
+        
+        generateIcons().then(() => {
+            console.log('All icons generated!');
+        });
+    </script>
+</body>
+</html>

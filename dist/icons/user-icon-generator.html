@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Icons from User's Shield</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        canvas { border: 1px solid #ccc; margin: 10px; }
+        .original { max-width: 200px; }
+    </style>
+</head>
+<body>
+    <h2>Створення іконок з вашого щита</h2>
+    
+    <div>
+        <h3>Оригінальна іконка:</h3>
+        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImdvbGQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojRkZENzAwO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNCODg2MEI7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJyZWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojREMxNDNDO3N0b3Atb3BhY2l0eToxIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM4QjAwMDA7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8IS0tIFJlZCBjaXJjbGUgYmFja2dyb3VuZCAtLT4KICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNTYiIHI9IjI0MCIgZmlsbD0idXJsKCNyZWQpIiBzdHJva2U9InVybCgjZ29sZCkiIHN0cm9rZS13aWR0aD0iOCIvPgogIDwhLS0gU2hpZWxkIHNoYXBlIC0tPgogIDxwYXRoIGQ9Ik0yNTYgODAgTDI4MCAxMjAgTDI4MCAyNDAgQzI4MCAzMDAgMjIwIDM2MCAyNTYgMzgwIEMxOTIgMzYwIDEzMiAzMDAgMTMyIDI0MCBMMTMyIDEyMCBaIiBmaWxsPSJ1cmwoI2dvbGQpIiBzdHJva2U9InVybCgjcmVkKSIgc3Ryb2tlLXdpZHRoPSI0Ii8+CiAgPCEtLSBJbm5lciBzaGllbGQgZGV0YWlsIC0tPgogIDxwYXRoIGQ9Ik0yNTYgMTAwIEwzNjAgMTUwIEwzNjAgMjUwIEMzNjAgMzAwIDMxMCAzNTAgMjU2IDM3MCBDMjAyIDM1MCAxNTIgMzAwIDE1MiAyNTAgTDE1MiAxNTAgWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI3JlZCkiIHN0cm9rZS13aWR0aD0iMiIvPgogIDwhLS0gSGFtbWVyIC0tPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwMCwgMjAwKSI+CiAgICA8cmVjdCB4PSIzNSIgeT0iMjAiIHdpZHRoPSI4IiBoZWlnaHQ9IjYwIiBmaWxsPSIjOEI0NTEzIiBzdHJva2U9IiM2NTQzMjEiIHN0cm9rZS13aWR0aD0iMSIvPgogICAgPHJlY3QgeD0iMjAiIHk9IjEwIiB3aWR0aD0iNDAiIGhlaWdodD0iMjAiIHJ4PSIyIiBmaWxsPSJ1cmwoI2dvbGQpIiBzdHJva2U9InVybCgjcmVkKSIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgICA8IS0tIEhhbW1lciBkZXRhaWwgLS0+CiAgICA8bGluZSB4MT0iMjUiIHkxPSIxNSIgeDI9IjU1IiB5Mj0iMTUiIHN0cm9rZT0idXJsKCNyZWQpIiBzdHJva2Utd2lkdGg9IjEiLz4KICAgIDxsaW5lIHgxPSIyNSIgeTE9IjI1IiB4Mj0iNTUiIHkyPSIyNSIgc3Ryb2tlPSJ1cmwoI3JlZCkiIHN0cm9rZS13aWR0aD0iMSIvPgogIDwvZz4KICA8IS0tIEF4ZSAtLT4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyODAsIDIwMCkiPgogICAgPHJlY3QgeD0iMzUiIHk9IjIwIiB3aWR0aD0iOCIgaGVpZ2h0PSI2MCIgZmlsbD0iIzhCNDUxMyIgc3Ryb2tlPSIjNjU0MzIxIiBzdHJva2Utd2lkdGg9IjEiLz4KICAgIDwhLS0gQXhlIGJsYWRlIC0tPgogICAgPHBhdGggZD0iTTEwIDEwIEw1MCAxMCBMNTUgMjUgTDUwIDMwIEwxMCAzMCBMNSAyNSBaIiBmaWxsPSJ1cmwoI2dvbGQpIiBzdHJva2U9InVybCgjcmVkKSIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgICA8IS0tIEF4ZSBkZXRhaWwgLS0+CiAgICA8bGluZSB4MT0iMzUiIHkxPSIxNSIgeDI9IjQ1IiB5Mj0iMTUiIHN0cm9rZT0idXJsKCNyZWQpIiBzdHJva2Utd2lkdGg9IjEiLz4KICAgIDxjaXJjbGUgY3g9IjQwIiBjeT0iMjIiIHI9IjIiIGZpbGw9InVybCgjcmVkKSIvPgogIDwvZz4KICA8IS0tIENlbnRlciBlbJsZW0gLS0+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMzIwIiByPSIyNSIgZmlsbD0idXJsKCNyZWQpIiBzdHJva2U9InVybCgjZ29sZCkiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjI1NiIgeT0iMzMwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ1cmwoI2dvbGQpIj5QUzwvdGV4dD4KICA8IS0tIERlY29yYXRpdmUgZWxlbWVudHMgLS0+CiAgPGNpcmNsZSBjeD0iMTgwIiBjeT0iMTgwIiByPSIzIiBmaWxsPSJ1cmwoI2dvbGQpIi8+CiAgPGNpcmNsZSBjeD0iMzMyIiBjeT0iMTgwIiByPSIzIiBmaWxsPSJ1cmwoI2dvbGQpIi8+CiAgPGNpcmNsZSBjeD0iMTgwIiBjeT0iMzMyIiByPSIzIiBmaWxsPSJ1cmwoI2dvbGQpIi8+CiAgPGNpcmNsZSBjeD0iMzMyIiBjeT0iMzMyIiByPSIzIiBmaWxsPSJ1cmwoI2dvbGQpIi8+Cjwvc3ZnPg==" class="original" />
+    </div>
+    
+    <div>
+        <h3>Попередній перегляд:</h3>
+        <canvas id="preview" width="180" height="180"></canvas>
+    </div>
+    
+    <button onclick="downloadAll()">Завантажити всі іконки</button>
+    
+    <script>
+        const canvas = document.getElementById('preview');
+        const ctx = canvas.getContext('2d');
+        
+        const sizes = [
+            { size: 57, name: 'apple-touch-icon-57x57' },
+            { size: 72, name: 'apple-touch-icon-72x72' },
+            { size: 114, name: 'apple-touch-icon-114x114' },
+            { size: 120, name: 'apple-touch-icon-120x120' },
+            { size: 144, name: 'apple-touch-icon-144x144' },
+            { size: 152, name: 'apple-touch-icon-152x152' },
+            { size: 167, name: 'apple-touch-icon-167x167' },
+            { size: 180, name: 'apple-touch-icon-180x180' },
+            { size: 192, name: 'icon-192x192' },
+            { size: 512, name: 'icon-512x512' }
+        ];
+        
+        function drawIcon(size) {
+            canvas.width = size;
+            canvas.height = size;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Red circle background
+            const gradient = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+            gradient.addColorStop(0, '#DC143C');
+            gradient.addColorStop(1, '#8B0000');
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/2 - 2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Gold border
+            ctx.strokeStyle = '#DAA520';
+            ctx.lineWidth = Math.max(1, size / 64);
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/2 - 4, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Shield
+            const shieldSize = size * 0.6;
+            const shieldX = size/2 - shieldSize/2;
+            const shieldY = size * 0.15;
+            
+            // Gold shield
+            ctx.fillStyle = '#DAA520';
+            ctx.strokeStyle = '#DC143C';
+            ctx.lineWidth = Math.max(1, size / 128);
+            
+            ctx.beginPath();
+            ctx.moveTo(size/2, shieldY);
+            ctx.lineTo(shieldX + shieldSize, shieldY + shieldSize * 0.3);
+            ctx.lineTo(shieldX + shieldSize, shieldY + shieldSize * 0.8);
+            ctx.lineTo(size/2, shieldY + shieldSize);
+            ctx.lineTo(shieldX, shieldY + shieldSize * 0.8);
+            ctx.lineTo(shieldX, shieldY + shieldSize * 0.3);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Inner shield detail
+            if (size > 100) {
+                ctx.strokeStyle = '#B91C1C';
+                ctx.lineWidth = Math.max(0.5, size / 256);
+                ctx.beginPath();
+                ctx.moveTo(size/2, shieldY + shieldSize * 0.05);
+                ctx.lineTo(shieldX + shieldSize * 0.95, shieldY + shieldSize * 0.35);
+                ctx.lineTo(shieldX + shieldSize * 0.95, shieldY + shieldSize * 0.75);
+                ctx.lineTo(size/2, shieldY + shieldSize * 0.95);
+                ctx.lineTo(shieldX + shieldSize * 0.05, shieldY + shieldSize * 0.75);
+                ctx.lineTo(shieldX + shieldSize * 0.05, shieldY + shieldSize * 0.35);
+                ctx.closePath();
+                ctx.stroke();
+            }
+            
+            // Hammer
+            const toolSize = size * 0.15;
+            const hammerX = size * 0.35;
+            const hammerY = size * 0.45;
+            
+            // Hammer handle
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(hammerX + toolSize * 0.7, hammerY, toolSize * 0.15, toolSize * 0.8);
+            
+            // Hammer head
+            ctx.fillStyle = '#DAA520';
+            ctx.fillRect(hammerX, hammerY - toolSize * 0.1, toolSize * 0.8, toolSize * 0.3);
+            ctx.strokeStyle = '#DC143C';
+            ctx.lineWidth = Math.max(0.5, size / 180);
+            ctx.strokeRect(hammerX, hammerY - toolSize * 0.1, toolSize * 0.8, toolSize * 0.3);
+            
+            // Hammer details
+            ctx.strokeStyle = '#B91C1C';
+            ctx.lineWidth = Math.max(0.5, size / 360);
+            ctx.beginPath();
+            ctx.moveTo(hammerX + toolSize * 0.1, hammerY + toolSize * 0.05);
+            ctx.lineTo(hammerX + toolSize * 0.7, hammerY + toolSize * 0.05);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(hammerX + toolSize * 0.1, hammerY + toolSize * 0.15);
+            ctx.lineTo(hammerX + toolSize * 0.7, hammerY + toolSize * 0.15);
+            ctx.stroke();
+            
+            // Axe
+            const axeX = size * 0.55;
+            const axeY = size * 0.45;
+            
+            // Axe handle
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(axeX + toolSize * 0.7, axeY, toolSize * 0.15, toolSize * 0.8);
+            
+            // Axe blade
+            ctx.fillStyle = '#DAA520';
+            ctx.beginPath();
+            ctx.moveTo(axeX, axeY - toolSize * 0.1);
+            ctx.lineTo(axeX + toolSize * 0.8, axeY - toolSize * 0.1);
+            ctx.lineTo(axeX + toolSize, axeY + toolSize * 0.2);
+            ctx.lineTo(axeX + toolSize * 0.8, axeY + toolSize * 0.3);
+            ctx.lineTo(axeX, axeY + toolSize * 0.3);
+            ctx.lineTo(axeX - toolSize * 0.2, axeY + toolSize * 0.2);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Axe details
+            ctx.strokeStyle = '#B91C1C';
+            ctx.lineWidth = Math.max(0.5, size / 360);
+            ctx.beginPath();
+            ctx.moveTo(axeX + toolSize * 0.1, axeY + toolSize * 0.05);
+            ctx.lineTo(axeX + toolSize * 0.7, axeY + toolSize * 0.05);
+            ctx.stroke();
+            
+            // Center emblem
+            if (size > 100) {
+                ctx.fillStyle = '#DC143C';
+                ctx.beginPath();
+                ctx.arc(size/2, size * 0.75, size * 0.08, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#DAA520';
+                ctx.lineWidth = Math.max(0.5, size / 360);
+                ctx.stroke();
+                
+                // Text
+                ctx.fillStyle = '#DAA520';
+                ctx.font = `bold ${size * 0.06}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('ПС', size/2, size * 0.75);
+            }
+            
+            // Decorative elements
+            const decorSize = Math.max(1, size / 256);
+            ctx.fillStyle = '#DAA520';
+            ctx.beginPath();
+            ctx.arc(size * 0.35, size * 0.35, decorSize, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(size * 0.65, size * 0.35, decorSize, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(size * 0.35, size * 0.65, decorSize, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(size * 0.65, size * 0.65, decorSize, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        async function downloadAll() {
+            for (const { size, name } of sizes) {
+                drawIcon(size);
+                
+                canvas.toBlob(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${name}.png`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                }, 'image/png');
+                
+                await new Promise(resolve => setTimeout(resolve, 200));
+            }
+        }
+        
+        // Draw preview
+        drawIcon(180);
+    </script>
+</body>
+</html>

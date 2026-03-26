@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create PNG Icons</title>
+</head>
+<body>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        const sizes = [
+            { size: 57, name: 'apple-touch-icon-57x57' },
+            { size: 72, name: 'apple-touch-icon-72x72' },
+            { size: 114, name: 'apple-touch-icon-114x114' },
+            { size: 120, name: 'apple-touch-icon-120x120' },
+            { size: 144, name: 'apple-touch-icon-144x144' },
+            { size: 152, name: 'apple-touch-icon-152x152' },
+            { size: 167, name: 'apple-touch-icon-167x167' },
+            { size: 180, name: 'apple-touch-icon-180x180' },
+            { size: 192, name: 'icon-192x192' },
+            { size: 512, name: 'icon-512x512' }
+        ];
+        
+        async function createIcons() {
+            for (const { size, name } of sizes) {
+                canvas.width = size;
+                canvas.height = size;
+                
+                // Clear canvas
+                ctx.clearRect(0, 0, size, size);
+                
+                // Background circle with gradient
+                const gradient = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+                gradient.addColorStop(0, '#DC143C');
+                gradient.addColorStop(0.5, '#B91C1C');
+                gradient.addColorStop(1, '#8B0000');
+                
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(size/2, size/2, size/2 - 2, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Gold border
+                ctx.strokeStyle = '#DAA520';
+                ctx.lineWidth = Math.max(1, size / 90);
+                ctx.beginPath();
+                ctx.arc(size/2, size/2, size/2 - 3, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Shield
+                const shieldSize = size * 0.5;
+                const shieldX = size/2 - shieldSize/2;
+                const shieldY = size * 0.15;
+                
+                // Gold shield background
+                ctx.fillStyle = '#DAA520';
+                ctx.strokeStyle = '#DC143C';
+                ctx.lineWidth = Math.max(1, size / 180);
+                
+                ctx.beginPath();
+                ctx.moveTo(size/2, shieldY);
+                ctx.lineTo(shieldX + shieldSize, shieldY + shieldSize * 0.3);
+                ctx.lineTo(shieldX + shieldSize, shieldY + shieldSize * 0.8);
+                ctx.lineTo(size/2, shieldY + shieldSize);
+                ctx.lineTo(shieldX, shieldY + shieldSize * 0.8);
+                ctx.lineTo(shieldX, shieldY + shieldSize * 0.3);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+                
+                // Inner shield detail
+                if (size > 100) {
+                    ctx.strokeStyle = '#B91C1C';
+                    ctx.lineWidth = Math.max(0.5, size / 360);
+                    ctx.beginPath();
+                    ctx.moveTo(size/2, shieldY + shieldSize * 0.05);
+                    ctx.lineTo(shieldX + shieldSize * 0.95, shieldY + shieldSize * 0.35);
+                    ctx.lineTo(shieldX + shieldSize * 0.95, shieldY + shieldSize * 0.75);
+                    ctx.lineTo(size/2, shieldY + shieldSize * 0.95);
+                    ctx.lineTo(shieldX + shieldSize * 0.05, shieldY + shieldSize * 0.75);
+                    ctx.lineTo(shieldX + shieldSize * 0.05, shieldY + shieldSize * 0.35);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+                
+                // Hammer
+                const toolSize = size * 0.12;
+                const hammerX = size * 0.35;
+                const hammerY = size * 0.45;
+                
+                // Hammer handle
+                ctx.fillStyle = '#8B4513';
+                ctx.fillRect(hammerX + toolSize * 0.7, hammerY, toolSize * 0.15, toolSize * 0.8);
+                
+                // Hammer head
+                ctx.fillStyle = '#FFD700';
+                ctx.fillRect(hammerX, hammerY - toolSize * 0.1, toolSize * 0.8, toolSize * 0.3);
+                ctx.strokeStyle = '#DC143C';
+                ctx.lineWidth = Math.max(0.5, size / 240);
+                ctx.strokeRect(hammerX, hammerY - toolSize * 0.1, toolSize * 0.8, toolSize * 0.3);
+                
+                // Axe
+                const axeX = size * 0.55;
+                const axeY = size * 0.45;
+                
+                // Axe handle
+                ctx.fillStyle = '#8B4513';
+                ctx.fillRect(axeX + toolSize * 0.7, axeY, toolSize * 0.15, toolSize * 0.8);
+                
+                // Axe blade
+                ctx.fillStyle = '#FFD700';
+                ctx.beginPath();
+                ctx.moveTo(axeX, axeY - toolSize * 0.1);
+                ctx.lineTo(axeX + toolSize * 0.8, axeY - toolSize * 0.1);
+                ctx.lineTo(axeX + toolSize, axeY + toolSize * 0.2);
+                ctx.lineTo(axeX + toolSize * 0.8, axeY + toolSize * 0.3);
+                ctx.lineTo(axeX, axeY + toolSize * 0.3);
+                ctx.lineTo(axeX - toolSize * 0.2, axeY + toolSize * 0.2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+                
+                // Center emblem
+                if (size > 100) {
+                    ctx.fillStyle = '#DC143C';
+                    ctx.beginPath();
+                    ctx.arc(size/2, size * 0.75, size * 0.06, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#FFD700';
+                    ctx.lineWidth = Math.max(0.5, size / 360);
+                    ctx.stroke();
+                    
+                    // Text
+                    ctx.fillStyle = '#FFD700';
+                    ctx.font = `bold ${size * 0.05}px Arial`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('ПС', size/2, size * 0.75);
+                }
+                
+                // Download the icon
+                canvas.toBlob(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${name}.png`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                }, 'image/png');
+                
+                // Wait between downloads
+                await new Promise(resolve => setTimeout(resolve, 200));
+            }
+        }
+        
+        // Auto-start
+        createIcons().then(() => {
+            console.log('All PNG icons created successfully!');
+        });
+    </script>
+</body>
+</html>
