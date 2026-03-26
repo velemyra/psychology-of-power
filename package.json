@@ -2,5 +2,8 @@
   "name": "psychology-power",
   "version": "1.0.0",
   "description": "Psychology of Power - PWA App",
-  "main": "index.html"
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Build complete - static HTML ready'"
+  }
 }
