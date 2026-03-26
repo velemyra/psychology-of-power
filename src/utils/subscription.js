@@ -1,5 +1,4 @@
-// Subscription management utilities
-import { subscriptionDB, settingsDB } from './db'
+// Subscription management utilities for Psychology of Power V2
 
 // Subscription plans
 export const SUBSCRIPTION_PLANS = {
@@ -8,343 +7,293 @@ export const SUBSCRIPTION_PLANS = {
     name: 'Free',
     price: 0,
     features: [
-      'До 5 інцидентів на місяць',
-      'Базові шаблони скарг',
-      'Калькулятор штрафів',
-      'Дорожні знаки (офлайн)',
-      'Базова юридична допомога'
+      'basic_incidents',
+      'limited_storage',
+      'basic_complaints'
     ],
-    limitations: {
-      incidentsPerMonth: 5,
-      complaintTemplates: 10,
-      cloudStorage: 0,
-      prioritySupport: false
-    }
-  },
-  pro: {
-    id: 'pro',
-    name: 'PRO',
-    price: 99,
-    pricePeriod: 'місяць',
-    features: [
-      'Необмежена кількість інцидентів',
-      'Хмарне зберігання на 30 днів',
-      'Розширена база скарг (50+ шаблонів)',
-      'Пріоритетна підтримка',
-      'Автоматична відправка скарг',
-      'Експорт даних в PDF/Word'
-    ],
-    limitations: {
-      incidentsPerMonth: -1, // unlimited
-      complaintTemplates: 50,
-      cloudStorage: 30, // days
-      prioritySupport: true
+    limits: {
+      incidents: 10,
+      storage: '100MB'
     }
   },
   premium: {
     id: 'premium',
-    name: 'PREMIUM',
-    price: 199,
-    pricePeriod: 'місяць',
+    name: 'Premium',
+    price: 99,
     features: [
-      'Все з PRO плану',
-      'Консультації юристів (2 на місяць)',
-      'Персоналізовані шаблони скарг',
-      'Аналіз інцидентів юристом',
-      'Знижка 30% на представництво в суді',
-      'Хмарне зберігання на 90 днів'
+      'unlimited_incidents',
+      'cloud_storage',
+      'advanced_complaints',
+      'priority_support',
+      'legal_templates'
     ],
-    limitations: {
-      incidentsPerMonth: -1,
-      complaintTemplates: -1,
-      cloudStorage: 90,
-      prioritySupport: true,
-      legalConsultations: 2
+    limits: {
+      incidents: 'unlimited',
+      storage: '10GB'
     }
   }
 }
 
 // Check current subscription
-export const checkSubscription = async () => {
+export const checkSubscription = () => {
   try {
-    const activeSubscription = await subscriptionDB.getActive()
+    const subscriptionData = localStorage.getItem('psychology-of-power-subscription')
     
-    if (activeSubscription) {
-      // Check if subscription is still valid
-      const now = new Date()
-      const endDate = new Date(activeSubscription.endDate)
+    if (subscriptionData) {
+      const subscription = JSON.parse(subscriptionData)
       
-      if (now <= endDate) {
-        return {
-          ...activeSubscription,
-          plan: SUBSCRIPTION_PLANS[activeSubscription.planId],
-          isValid: true
-        }
-      } else {
-        // Subscription expired, update status
-        try {
-          await subscriptionDB.update({
-            ...activeSubscription,
-            status: 'expired'
-          })
-        } catch (updateError) {
-          console.error('Error updating expired subscription:', updateError)
-        }
+      // Check if subscription is still valid
+      if (subscription.expiresAt && new Date(subscription.expiresAt) > new Date()) {
+        return subscription
       }
     }
     
-    // Return free plan as default
+    // Default free subscription
     return {
-      id: 'free-default',
-      planId: 'free',
+      plan: 'free',
       status: 'active',
-      startDate: new Date().toISOString(),
-      endDate: null,
-      plan: SUBSCRIPTION_PLANS.free,
-      isValid: true
+      expiresAt: null,
+      features: SUBSCRIPTION_PLANS.free.features,
+      limits: SUBSCRIPTION_PLANS.free.limits
     }
-    
   } catch (error) {
     console.error('Error checking subscription:', error)
-    // Return free plan as fallback
     return {
-      id: 'free-default',
-      planId: 'free',
+      plan: 'free',
       status: 'active',
-      startDate: new Date().toISOString(),
-      endDate: null,
-      plan: SUBSCRIPTION_PLANS.free,
-      isValid: true
+      expiresAt: null,
+      features: SUBSCRIPTION_PLANS.free.features,
+      limits: SUBSCRIPTION_PLANS.free.limits
     }
-  }
-}
-
-// Check feature availability
-export const checkFeatureAccess = async (feature) => {
-  const subscription = await checkSubscription()
-  
-  switch (feature) {
-    case 'unlimited_incidents':
-      return subscription.plan.limitations.incidentsPerMonth === -1
-    
-    case 'cloud_storage':
-      return subscription.plan.limitations.cloudStorage > 0
-    
-    case 'priority_support':
-      return subscription.plan.limitations.prioritySupport
-    
-    case 'legal_consultations':
-      return subscription.plan.limitations.legalConsultations > 0
-    
-    case 'advanced_complaints':
-      return subscription.plan.limitations.complaintTemplates > 10
-    
-    default:
-      return true
-  }
-}
-
-// Check incident limit
-export const checkIncidentLimit = async () => {
-  const subscription = await checkSubscription()
-  
-  if (subscription.plan.limitations.incidentsPerMonth === -1) {
-    return { allowed: true, remaining: -1 }
-  }
-  
-  // Count incidents this month
-  const now = new Date()
-  const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-  
-  try {
-    const { incidentsDB } = await import('./db')
-    const incidents = await incidentsDB.getAll()
-    const thisMonthIncidents = incidents.filter(incident => {
-      const incidentDate = new Date(incident.timestamp)
-      return incidentDate >= firstDayOfMonth
-    })
-    
-    const remaining = subscription.plan.limitations.incidentsPerMonth - thisMonthIncidents.length
-    
-    return {
-      allowed: remaining > 0,
-      remaining: Math.max(0, remaining),
-      current: thisMonthIncidents.length,
-      limit: subscription.plan.limitations.incidentsPerMonth
-    }
-  } catch (error) {
-    console.error('Error checking incident limit:', error)
-    return { allowed: true, remaining: -1 }
-  }
-}
-
-// Create subscription
-export const createSubscription = async (planId, paymentMethod) => {
-  const plan = SUBSCRIPTION_PLANS[planId]
-  
-  if (!plan) {
-    throw new Error('Invalid subscription plan')
-  }
-  
-  const subscription = {
-    id: Date.now().toString(),
-    planId,
-    status: 'active',
-    startDate: new Date().toISOString(),
-    endDate: planId === 'free' ? null : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
-    paymentMethod,
-    autoRenew: true,
-    createdAt: new Date().toISOString()
-  }
-  
-  try {
-    await subscriptionDB.add(subscription)
-    
-    // Save user preference
-    await settingsDB.set('lastSubscriptionPlan', planId)
-    
-    return subscription
-  } catch (error) {
-    console.error('Error creating subscription:', error)
-    throw error
-  }
-}
-
-// Cancel subscription
-export const cancelSubscription = async (subscriptionId) => {
-  try {
-    const subscription = await subscriptionDB.getById(subscriptionId)
-    
-    if (!subscription) {
-      throw new Error('Subscription not found')
-    }
-    
-    // Update subscription to cancel at end of period
-    await subscriptionDB.update({
-      ...subscription,
-      autoRenew: false,
-      status: 'canceled',
-      canceledAt: new Date().toISOString()
-    })
-    
-    return true
-  } catch (error) {
-    console.error('Error canceling subscription:', error)
-    throw error
   }
 }
 
 // Upgrade subscription
-export const upgradeSubscription = async (newPlanId, paymentMethod) => {
+export const upgradeSubscription = (planId) => {
   try {
-    const currentSubscription = await subscriptionDB.getActive()
-    
-    // Create new subscription
-    const newSubscription = await createSubscription(newPlanId, paymentMethod)
-    
-    // Cancel old subscription if exists
-    if (currentSubscription && currentSubscription.planId !== 'free') {
-      await cancelSubscription(currentSubscription.id)
+    const plan = SUBSCRIPTION_PLANS[planId]
+    if (!plan) {
+      throw new Error('Invalid subscription plan')
     }
     
-    return newSubscription
+    const subscription = {
+      plan: planId,
+      status: 'active',
+      expiresAt: planId === 'premium' ? 
+        new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() : // 30 days
+        null,
+      features: plan.features,
+      limits: plan.limits,
+      upgradedAt: new Date().toISOString()
+    }
+    
+    localStorage.setItem('psychology-of-power-subscription', JSON.stringify(subscription))
+    return subscription
   } catch (error) {
     console.error('Error upgrading subscription:', error)
-    throw error
+    return null
   }
 }
 
-// Promocode management
-export const validatePromocode = async (code) => {
-  // This would typically connect to a backend service
-  // For now, we'll use some hardcoded examples
+// Check if user can access feature
+export const canAccessFeature = (feature, userSubscription) => {
+  const subscription = userSubscription || checkSubscription()
+  return subscription.features.includes(feature)
+}
+
+// Get subscription status with days left
+export const getSubscriptionStatus = () => {
+  const subscription = checkSubscription()
   
-  const promocodes = {
-    'START2024': {
-      discount: 50,
-      type: 'percentage',
-      validUntil: new Date('2024-12-31'),
-      usageLimit: 1000,
-      currentUsage: 234,
-      plans: ['pro', 'premium']
+  if (subscription.plan === 'premium') {
+    if (subscription.expiresAt) {
+      const daysLeft = Math.ceil((new Date(subscription.expiresAt) - new Date()) / (1000 * 60 * 60 * 24))
+      return {
+        status: 'premium',
+        daysLeft: daysLeft,
+        expiresAt: subscription.expiresAt
+      }
+    }
+    return {
+      status: 'premium',
+      daysLeft: 'unlimited',
+      expiresAt: null
+    }
+  }
+  
+  return {
+    status: 'free',
+    daysLeft: null,
+    expiresAt: null
+  }
+}
+
+// Check storage limits
+export const checkStorageLimit = (currentSize, userSubscription) => {
+  const subscription = userSubscription || checkSubscription()
+  const limit = subscription.limits.storage
+  
+  if (limit === 'unlimited') {
+    return { canStore: true, used: currentSize, limit: 'unlimited' }
+  }
+  
+  const limitInBytes = parseStorageLimit(limit)
+  return {
+    canStore: currentSize < limitInBytes,
+    used: currentSize,
+    limit: limitInBytes,
+    remaining: limitInBytes - currentSize
+  }
+}
+
+// Parse storage limit string to bytes
+function parseStorageLimit(limit) {
+  const units = {
+    'B': 1,
+    'KB': 1024,
+    'MB': 1024 * 1024,
+    'GB': 1024 * 1024 * 1024
+  }
+  
+  const match = limit.match(/^(\d+)(B|KB|MB|GB)$/)
+  if (!match) return 0
+  
+  const [, size, unit] = match
+  return parseInt(size) * units[unit]
+}
+
+// Check incident limit for user
+export const checkIncidentLimit = (userSubscription) => {
+  const subscription = userSubscription || checkSubscription()
+  const limit = subscription.limits.incidents
+  
+  if (limit === 'unlimited') {
+    return { canCreate: true, used: 0, limit: 'unlimited' }
+  }
+  
+  // Get current incident count from localStorage
+  try {
+    const incidents = JSON.parse(localStorage.getItem('PsychologyOfPowerV2') || '{}').incidents || []
+    const used = incidents.length
+    
+    return {
+      canCreate: used < limit,
+      used: used,
+      limit: limit,
+      remaining: limit - used
+    }
+  } catch (error) {
+    console.error('Error checking incident limit:', error)
+    return { canCreate: true, used: 0, limit: limit }
+  }
+}
+
+// Check if user can access specific feature
+export const checkFeatureAccess = (feature, userSubscription) => {
+  return canAccessFeature(feature, userSubscription)
+}
+
+// Get subscription statistics
+export const getSubscriptionStats = (userSubscription) => {
+  const subscription = userSubscription || checkSubscription()
+  const status = getSubscriptionStatus()
+  
+  // Get current usage stats
+  let incidentsUsed = 0
+  let storageUsed = 0
+  
+  try {
+    const dbData = JSON.parse(localStorage.getItem('PsychologyOfPowerV2') || '{}')
+    incidentsUsed = dbData.incidents ? dbData.incidents.length : 0
+    
+    // Calculate storage size (rough estimate)
+    const dbString = JSON.stringify(dbData)
+    storageUsed = new Blob([dbString]).size
+  } catch (error) {
+    console.error('Error getting subscription stats:', error)
+  }
+  
+  return {
+    plan: subscription.plan,
+    status: status.status,
+    daysLeft: status.daysLeft,
+    expiresAt: status.expiresAt,
+    limits: subscription.limits,
+    usage: {
+      incidents: incidentsUsed,
+      storage: storageUsed
     },
-    'FREE30': {
-      discount: 30,
-      type: 'days',
-      validUntil: new Date('2024-06-30'),
-      usageLimit: 500,
-      currentUsage: 123,
-      plans: ['pro', 'premium']
+    features: subscription.features
+  }
+}
+
+// Promocode validation
+export const validatePromocode = (code) => {
+  const promocodes = {
+    'PREMIUM2024': {
+      valid: true,
+      discount: 50,
+      plan: 'premium',
+      duration: 30 // days
+    },
+    'DEMO': {
+      valid: true,
+      discount: 100,
+      plan: 'premium',
+      duration: 7 // days
+    },
+    'TEST': {
+      valid: true,
+      discount: 25,
+      plan: 'premium',
+      duration: 14 // days
     }
   }
   
   const promo = promocodes[code.toUpperCase()]
   
   if (!promo) {
-    return { valid: false, error: 'Промокод не знайдено' }
-  }
-  
-  if (new Date() > promo.validUntil) {
-    return { valid: false, error: 'Промокод застарів' }
-  }
-  
-  if (promo.currentUsage >= promo.usageLimit) {
-    return { valid: false, error: 'Ліміт використання промокоду вичерпано' }
+    return {
+      valid: false,
+      error: 'Невідомий промокод'
+    }
   }
   
   return {
     valid: true,
     discount: promo.discount,
-    type: promo.type,
-    applicablePlans: promo.plans
+    plan: promo.plan,
+    duration: promo.duration,
+    originalPrice: SUBSCRIPTION_PLANS[promo.plan].price,
+    discountedPrice: promo.discount === 100 ? 0 : SUBSCRIPTION_PLANS[promo.plan].price * (1 - promo.discount / 100)
   }
 }
 
 // Apply promocode to subscription
-export const applyPromocode = async (planId, promocode) => {
-  const validation = await validatePromocode(promocode)
+export const applyPromocode = (code, userSubscription) => {
+  const validation = validatePromocode(code)
   
   if (!validation.valid) {
-    throw new Error(validation.error)
+    return validation
   }
   
-  const plan = SUBSCRIPTION_PLANS[planId]
+  const subscription = upgradeSubscription(validation.plan)
   
-  if (!validation.applicablePlans.includes(planId)) {
-    throw new Error('Промокод не застосовується до цього плану')
-  }
-  
-  let adjustedPrice = plan.price
-  
-  if (validation.type === 'percentage') {
-    adjustedPrice = plan.price * (1 - validation.discount / 100)
-  } else if (validation.type === 'days') {
-    // For free days, we'll handle this in the subscription creation
-    adjustedPrice = plan.price
+  if (subscription) {
+    // Apply promocode metadata
+    subscription.promocode = code.toUpperCase()
+    subscription.discount = validation.discount
+    subscription.originalPrice = validation.originalPrice
+    subscription.discountedPrice = validation.discountedPrice
+    
+    return {
+      success: true,
+      subscription: subscription
+    }
   }
   
   return {
-    originalPrice: plan.price,
-    discountedPrice: adjustedPrice,
-    discount: plan.price - adjustedPrice,
-    promocode,
-    promoType: validation.type
-  }
-}
-
-// Get subscription statistics
-export const getSubscriptionStats = async () => {
-  const subscription = await checkSubscription()
-  const incidentLimit = await checkIncidentLimit()
-  
-  return {
-    currentPlan: subscription.plan.name,
-    planId: subscription.planId,
-    incidentsUsed: incidentLimit.current || 0,
-    incidentsLimit: incidentLimit.limit,
-    incidentsRemaining: incidentLimit.remaining,
-    subscriptionEnds: subscription.endDate,
-    isPro: subscription.planId !== 'free',
-    features: subscription.plan.features
+    success: false,
+    error: 'Не вдалося застосувати промокод'
   }
 }
