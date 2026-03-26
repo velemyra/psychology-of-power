@@ -1,24 +1,9 @@
-/* Import platform-specific styles */
-@import url('./styles/windows-styles.css');
-
+/* Psychology of Power - Premium Dark Theme */
 :root {
-  /* Elegant Black-Gold-Red-White-Green Palette */
-  --primary-color: #DC143C; /* Crimson Red */
-  --secondary-color: #FFD700; /* Gold */
-  --accent-color: #FFD700; /* Gold */
-  --success-color: #00FF00; /* Bright Green for active indicators */
-  --success-dark: #00CC00; /* Darker Green */
-  --warning-color: #FFD700; /* Gold (replaces orange) */
-  --danger-color: #DC143C; /* Crimson Red */
-  --dark-color: #000000; /* Pure Black */
-  --light-color: #1A1A1A; /* Very Dark Gray */
-  --white: #FFFFFF;
-  --gold-light: #FFF8DC; /* Light Gold */
-  --gold-medium: #DAA520; /* Goldenrod */
-  --gold-dark: #B8860B; /* Dark Goldenrod */
-  --text-primary: #FFFFFF; /* White text */
-  --text-secondary: #FFD700; /* Gold text */
-  --text-muted: #CCCCCC; /* Light gray for muted text */
+  /* Primary Colors */
+  --black-primary: #000000;
+  --black-secondary: #1a1a1a;
+  --black-tertiary: #2d2d2d;
   
   /* Gold Accents */
   --gold-primary: #FFD700;
