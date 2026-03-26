@@ -1,15 +1,15 @@
 {
   "name": "ПСИХОЛОГІЯ СИЛИ",
-  "short_name": "ПСИХОЛОГІЯ СИЛИ",
-  "description": "PWA додаток для захисту прав водіїв під час спілкування з поліцією",
+  "short_name": "ПСИХОЛОГІЯ",
+  "description": "PWA додаток для захисту прав водіїв",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#DC143C",
-  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
   "scope": "/",
   "lang": "uk",
-  "categories": ["utilities", "business", "productivity"],
+  "categories": ["utilities", "productivity", "business"],
   "permissions": {
     "camera": {
       "description": "Доступ до камери для запису відео під час спілкування з поліцією"
@@ -23,40 +23,8 @@
   },
   "icons": [
     {
-      "src": "icons/apple-touch-icon-57x57.png",
-      "sizes": "57x57",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/apple-touch-icon-72x72.png",
-      "sizes": "72x72",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/apple-touch-icon-114x114.png",
-      "sizes": "114x114",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/apple-touch-icon-120x120.png",
-      "sizes": "120x120",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/apple-touch-icon-144x144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "icons/apple-touch-icon-152x152.png",
+      "src": "/icons/icon-152x152.png",
       "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "icons/apple-touch-icon-167x167.png",
-      "sizes": "167x167",
       "type": "image/png"
     },
     {
