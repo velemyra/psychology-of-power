@@ -67,11 +67,15 @@ const EmergencyMode = () => {
       try {
         const constraints1 = {
           video: {
-            facingMode: isFrontCamera ? 'user' : 'environment',
-            width: { ideal: 1920 },
-            height: { ideal: 1080 }
+            width: { ideal: 1920, max: 1920 },
+            height: { ideal: 1080, max: 1080 },
+            facingMode: 'environment'
           },
-          audio: !isMuted
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+          }
         }
         
         console.log('🎥 TRYING CONSTRAINTS 1:', constraints1)
