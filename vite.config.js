@@ -14,7 +14,15 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['aws-sdk']
-    }
+      external: ['aws-sdk'],
+      output: {
+        manualChunks: undefined
+      }
+    },
+    target: 'es2015',
+    minify: 'esbuild'
+  },
+  define: {
+    global: 'globalThis'
   }
 })
