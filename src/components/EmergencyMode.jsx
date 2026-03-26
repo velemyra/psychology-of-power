@@ -523,14 +523,24 @@ const EmergencyMode = () => {
         }
         
         // Use the proper incidentsDB from utils
-        const { incidentsDB } = await import('../utils/db')
-        await incidentsDB.add(incident)
-        
-        console.log('Incident saved successfully via utils')
-        alert('✅ Інцидент успішно збережено!' + (incident.s3Url ? ' Завантажено в хмару!' : ' Збережено локально!'))
-        
-        // Also create download link as backup
-        createDownloadLink(videoBlob, incident.id)
+        try {
+          // First try to initialize database
+          const { initDB } = await import('../utils/db')
+          await initDB()
+          
+          const { incidentsDB } = await import('../utils/db')
+          await incidentsDB.add(incident)
+          
+          console.log('Incident saved successfully via utils')
+          alert('✅ Інцидент успішно збережено!' + (incident.s3Url ? ' Завантажено в хмару!' : ' Збережено локально!'))
+          
+          // Also create download link as backup
+          createDownloadLink(videoBlob, incident.id)
+          
+        } catch (dbError) {
+          console.error('Error with utils DB:', dbError)
+          throw dbError // Go to fallback
+        }
         
       } catch (error) {
         console.error('Error saving incident via utils:', error)
@@ -538,16 +548,34 @@ const EmergencyMode = () => {
         // Fallback to manual IndexedDB
         try {
           console.log('Trying fallback IndexedDB...')
-          const db = await openDB()
-          const tx = db.transaction(['incidents'], 'readwrite')
-          const store = tx.objectStore('incidents')
-          await store.add(incident)
           
-          console.log('Incident saved successfully (fallback)')
-          alert('✅ Інцидент збережено (резервний метод)')
+          // Simple IndexedDB without external libraries
+          const request = indexedDB.open('PsychologyOfPowerDB_Fallback', 1)
           
-          // Create download link
-          createDownloadLink(videoBlob, incident.id)
+          request.onupgradeneeded = (event) => {
+            const db = event.target.result
+            if (!db.objectStoreNames.contains('incidents')) {
+              db.createObjectStore('incidents', { keyPath: 'id' })
+            }
+          }
+          
+          request.onsuccess = async (event) => {
+            const db = event.target.result
+            const tx = db.transaction(['incidents'], 'readwrite')
+            const store = tx.objectStore('incidents')
+            await store.add(incident)
+            
+            console.log('Incident saved successfully (fallback)')
+            alert('✅ Інцидент збережено (резервний метод)')
+            
+            // Create download link
+            createDownloadLink(videoBlob, incident.id)
+          }
+          
+          request.onerror = (error) => {
+            console.error('Fallback DB error:', error)
+            throw error
+          }
           
         } catch (fallbackError) {
           console.error('Error saving incident (fallback):', fallbackError)
