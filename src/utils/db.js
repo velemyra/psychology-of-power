@@ -93,7 +93,9 @@ export const incidentsDB = {
   // Add new incident
   async add(incident) {
     const db = await getDB()
-    return await db.add(STORES.incidents, incident)
+    const tx = db.transaction(STORES.incidents, 'readwrite')
+    const store = tx.objectStore(STORES.incidents)
+    return await store.add(incident)
   },
 
   // Get all incidents
@@ -111,13 +113,17 @@ export const incidentsDB = {
   // Update incident
   async update(incident) {
     const db = await getDB()
-    return await db.put(STORES.incidents, incident)
+    const tx = db.transaction(STORES.incidents, 'readwrite')
+    const store = tx.objectStore(STORES.incidents)
+    return await store.put(incident)
   },
 
   // Delete incident
   async delete(id) {
     const db = await getDB()
-    return await db.delete(STORES.incidents, id)
+    const tx = db.transaction(STORES.incidents, 'readwrite')
+    const store = tx.objectStore(STORES.incidents)
+    return await store.delete(id)
   },
 
   // Get incidents by type
