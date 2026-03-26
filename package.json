@@ -4,6 +4,6 @@
   "description": "Psychology of Power - PWA App",
   "main": "index.html",
   "scripts": {
-    "build": "copy index.html dist/ && echo 'Build complete - files copied to dist'"
+    "build": "cp index.html dist/ && echo 'Build complete - files copied to dist'"
   }
 }
