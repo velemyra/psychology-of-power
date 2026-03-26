@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
-import Header from './components/Header'
+import StatusBar from './components/StatusBar'
 import EmergencyMode from './components/EmergencyMode'
 import Incidents from './components/Incidents'
 import ComplaintGenerator from './components/ComplaintGenerator'
@@ -61,24 +61,19 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <Header 
-        onEmergencyActivate={handleEmergencyActivate}
-        onSubscriptionUpgrade={handleSubscriptionUpgrade}
-        userSubscription={userSubscription}
-        isOnline={isOnline}
-      />
+    <>
+      <StatusBar isOnline={isOnline} userSubscription={userSubscription} />
       
-      <main className="main-content">
+      <main className="main-container">
         <Routes>
           <Route path="/" element={<Home onEmergencyActivate={handleEmergencyActivate} />} />
           <Route path="/emergency" element={<EmergencyMode />} />
           <Route path="/incidents" element={<Incidents userSubscription={userSubscription} />} />
           <Route path="/complaints" element={<ComplaintGenerator userSubscription={userSubscription} />} />
           <Route path="/evidence" element={<Evidence userSubscription={userSubscription} />} />
-          <Route path="/fines" element={<FineCalculator />} />
-          <Route path="/road-signs" element={<RoadSigns />} />
-          <Route path="/legal-help" element={<LegalHelp />} />
+          <Route path="/fines" element={<FineCalculator userSubscription={userSubscription} />} />
+          <Route path="/road-signs" element={<RoadSigns userSubscription={userSubscription} />} />
+          <Route path="/legal-help" element={<LegalHelp userSubscription={userSubscription} />} />
           <Route path="/profile" element={<Profile userSubscription={userSubscription} onSubscriptionUpgrade={handleSubscriptionUpgrade} />} />
           <Route path="/menu" element={<Menu userSubscription={userSubscription} onEmergencyActivate={handleEmergencyActivate} />} />
         </Routes>
@@ -87,68 +82,81 @@ function App() {
       {showSubscriptionModal && (
         <SubscriptionModal 
           onClose={() => setShowSubscriptionModal(false)}
-          currentSubscription={userSubscription}
+          onSuccess={() => {
+            setShowSubscriptionModal(false)
+            const subscription = checkSubscription()
+            setUserSubscription(subscription)
+          }}
         />
       )}
-    </div>
+    </>
   )
 }
 
 function Home({ onEmergencyActivate }) {
+  const navigate = useNavigate()
+
+  const handleSectionClick = (path) => {
+    navigate(path)
+  }
+
   return (
-    <div className="container">
-      <div className="text-center mb-20">
-        <h1 style={{ color: 'white', fontSize: '2.5rem', marginBottom: '20px' }}>
-          ПСИХОЛОГІЯ СИЛИ
-        </h1>
-        <p style={{ color: 'white', fontSize: '1.2rem', marginBottom: '30px' }}>
-          Ваш надійний захист при спілкуванні з поліцією
-        </p>
-        
-        <button 
-          className="sos-button"
-          onClick={onEmergencyActivate}
-          style={{ margin: '0 auto 40px' }}
-        >
-          🚨 SOS
+    <div className="home-container">
+      {/* SOS Button */}
+      <div className="sos-button-container">
+        <button className="sos-button" onClick={onEmergencyActivate}>
+          SOS
         </button>
       </div>
 
-      <div className="grid grid-3">
-        <div className="card">
+      {/* Sections Grid */}
+      <div className="sections-container">
+        <div className="section-card" onClick={() => handleSectionClick('/incidents')}>
           <h3>📹 Інциденти</h3>
           <p>Перегляньте всі зафіксовані випадки</p>
-          <a href="/incidents" className="btn btn-primary">Переглянути</a>
+          <button className="btn">Переглянути</button>
         </div>
 
-        <div className="card">
+        <div className="section-card" onClick={() => handleSectionClick('/complaints')}>
           <h3>📝 Генератор скарг</h3>
           <p>Створіть юридично обґрунтовані скарги</p>
-          <a href="/complaints" className="btn btn-secondary">Створити</a>
+          <button className="btn">Створити</button>
         </div>
 
-        <div className="card">
+        <div className="section-card" onClick={() => handleSectionClick('/evidence')}>
           <h3>📂 Докази</h3>
           <p>Зберігайте та відправляйте докази</p>
-          <a href="/evidence" className="btn btn-success">Відкрити</a>
+          <button className="btn">Відкрити</button>
         </div>
 
-        <div className="card">
+        <div className="section-card" onClick={() => handleSectionClick('/fines')}>
           <h3>💰 Калькулятор штрафів</h3>
           <p>Дізнайтеся суми штрафів за ПДР</p>
-          <a href="/fines" className="btn btn-outline">Розрахувати</a>
+          <button className="btn">Розрахувати</button>
         </div>
 
-        <div className="card">
+        <div className="section-card" onClick={() => handleSectionClick('/road-signs')}>
           <h3>🚦 Дорожні знаки</h3>
-          <p>Розпізнавання знаків через камеру</p>
-          <a href="/road-signs" className="btn btn-outline">Сканувати</a>
+          <p>Вивчіть дорожні знаки України</p>
+          <button className="btn">Вивчити</button>
         </div>
 
-        <div className="card">
+        <div className="section-card" onClick={() => handleSectionClick('/legal-help')}>
           <h3>⚖️ Юридична допомога</h3>
-          <p>Консультації та поради юристів</p>
-          <a href="/legal-help" className="btn btn-outline">Отримати</a>
+          <p>Отримайте консультацію юриста</p>
+          <button className="btn">Допомога</button>
+        </div>
+
+        <div className="section-card" onClick={() => handleSectionClick('/profile')}>
+          <h3>👤 Профіль</h3>
+          <p>Керуйте вашим акаунтом</p>
+          <button className="btn">Профіль</button>
+        </div>
+
+        <div className="section-card" onClick={() => handleSectionClick('/menu')}>
+          <h3>📱 Меню</h3>
+          <p>Всі функції додатку</p>
+          <button className="btn">Меню</button>
         </div>
       </div>
     </div>
