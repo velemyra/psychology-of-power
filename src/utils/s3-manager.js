@@ -1,10 +1,16 @@
 // S3 Manager for Psychology of Power
-const { s3, S3_BUCKET } = require('./aws-config');
+import { initAWS, S3_BUCKET } from './aws-config';
 
 class S3Manager {
   // Create S3 bucket
   static async createBucket() {
     try {
+      const { s3 } = await initAWS();
+      if (!s3) {
+        console.log('⚠️ AWS not available in build environment');
+        return false;
+      }
+
       const params = {
         Bucket: S3_BUCKET,
         CreateBucketConfiguration: {
@@ -28,6 +34,12 @@ class S3Manager {
   // Set bucket CORS configuration
   static async setBucketCors() {
     try {
+      const { s3 } = await initAWS();
+      if (!s3) {
+        console.log('⚠️ AWS not available in build environment');
+        return false;
+      }
+
       const corsParams = {
         Bucket: S3_BUCKET,
         CORSConfiguration: {
@@ -54,6 +66,12 @@ class S3Manager {
   // Upload video to S3
   static async uploadVideo(file, fileName) {
     try {
+      const { s3 } = await initAWS();
+      if (!s3) {
+        console.log('⚠️ AWS not available - skipping upload');
+        return null;
+      }
+
       const params = {
         Bucket: S3_BUCKET,
         Key: `videos/${fileName}`,
@@ -77,4 +95,4 @@ class S3Manager {
   }
 }
 
-module.exports = S3Manager;
+export default S3Manager;

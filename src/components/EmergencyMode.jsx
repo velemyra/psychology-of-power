@@ -503,12 +503,19 @@ const EmergencyMode = () => {
         try {
           const { S3Manager } = await import('../utils/s3-manager')
           const fileName = `incident_${incident.id}_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.webm`
-          const s3Url = await S3Manager.uploadVideo(videoBlob, fileName)
           
-          if (s3Url) {
-            console.log('✅ Video uploaded to AWS S3:', s3Url)
-            incident.s3Url = s3Url
-            incident.cloudStorage = true
+          // Only upload if AWS is available
+          if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+            const s3Url = await S3Manager.uploadVideo(videoBlob, fileName)
+            
+            if (s3Url) {
+              console.log('✅ Video uploaded to AWS S3:', s3Url)
+              incident.s3Url = s3Url
+              incident.cloudStorage = true
+            }
+          } else {
+            console.log('⚠️ AWS upload skipped in development')
+            incident.cloudStorage = false
           }
         } catch (awsError) {
           console.log('⚠️ AWS upload failed, using local storage:', awsError)
