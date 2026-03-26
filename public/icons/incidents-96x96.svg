@@ -1,0 +1,21 @@
+<svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="96" height="96" fill="#667eea" rx="12"/>
+  
+  <!-- Video camera icon -->
+  <rect x="20" y="25" width="40" height="30" fill="#ffffff" rx="4"/>
+  <circle cx="40" cy="40" r="8" fill="#667eea"/>
+  
+  <!-- Camera lens -->
+  <circle cx="40" cy="40" r="5" fill="#ffffff"/>
+  
+  <!-- Camera body extension -->
+  <path d="M60 35 L70 30 L70 50 L60 45 Z" fill="#ffffff"/>
+  
+  <!-- Recording indicator -->
+  <circle cx="72" cy="24" r="4" fill="#ef4444"/>
+  
+  <!-- Location pin -->
+  <path d="M48 65 C45 65 42 62 42 59 C42 56 48 48 48 48 C48 48 54 56 54 59 C54 62 51 65 48 65 Z" fill="#ffffff"/>
+  <circle cx="48" cy="59" r="2" fill="#667eea"/>
+</svg>

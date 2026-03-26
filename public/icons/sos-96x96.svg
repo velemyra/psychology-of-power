@@ -1,0 +1,17 @@
+<svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+  <!-- SOS Button Style -->
+  <rect width="96" height="96" fill="#dc2626" rx="12"/>
+  
+  <!-- Inner circle -->
+  <circle cx="48" cy="48" r="36" fill="#ef4444"/>
+  
+  <!-- SOS Text -->
+  <text x="48" y="48" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#ffffff">SOS</text>
+  
+  <!-- Emergency signal waves -->
+  <g opacity="0.6">
+    <circle cx="48" cy="48" r="20" fill="none" stroke="#ffffff" stroke-width="2"/>
+    <circle cx="48" cy="48" r="28" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+    <circle cx="48" cy="48" r="36" fill="none" stroke="#ffffff" stroke-width="1"/>
+  </g>
+</svg>

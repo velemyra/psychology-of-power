@@ -1,0 +1,36 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" fill="#ffffff"/>
+  
+  <!-- Main circle -->
+  <circle cx="256" cy="256" r="200" fill="#FF6B35"/>
+  
+  <!-- Inner circle for gradient effect -->
+  <circle cx="256" cy="256" r="180" fill="#E55A2B"/>
+  
+  <!-- Center circle -->
+  <circle cx="256" cy="256" r="160" fill="#FF6B35"/>
+  
+  <!-- Text "ПС" -->
+  <text x="256" y="256" font-family="Arial, sans-serif" font-size="120" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#ffffff">ПС</text>
+  
+  <!-- Decorative law symbols -->
+  <g opacity="0.2">
+    <!-- Top scales -->
+    <circle cx="100" cy="100" r="20" fill="#ffffff"/>
+    <circle cx="412" cy="100" r="20" fill="#ffffff"/>
+    <line x1="100" y1="100" x2="412" y2="100" stroke="#ffffff" stroke-width="3"/>
+    
+    <!-- Bottom scales -->
+    <circle cx="100" cy="412" r="20" fill="#ffffff"/>
+    <circle cx="412" cy="412" r="20" fill="#ffffff"/>
+    <line x1="100" y1="412" x2="412" y2="412" stroke="#ffffff" stroke-width="3"/>
+    
+    <!-- Side decorations -->
+    <rect x="40" y="240" width="30" height="32" fill="#ffffff" rx="5"/>
+    <rect x="442" y="240" width="30" height="32" fill="#ffffff" rx="5"/>
+  </g>
+  
+  <!-- Subtle border -->
+  <circle cx="256" cy="256" r="200" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.5"/>
+</svg>

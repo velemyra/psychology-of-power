@@ -1,0 +1,401 @@
+/* Windows-specific styles for Psychology of Power App */
+
+/* Windows context menu */
+.windows-context-menu {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid #d1d1d1;
+  background: #ffffff;
+}
+
+.context-menu-item {
+  transition: background-color 0.1s ease;
+}
+
+.context-menu-item:hover {
+  background-color: #e5f3ff;
+}
+
+.context-menu-item:active {
+  background-color: #cce4ff;
+}
+
+/* Windows dark theme */
+.windows-dark-theme {
+  --primary-color: #ff8c42;
+  --secondary-color: #7c4dff;
+  --accent-color: #536dfe;
+  --dark-color: #ffffff;
+  --light-color: #2d2d2d;
+  --white: #1a1a1a;
+}
+
+.windows-dark-theme .card {
+  background: var(--light-color);
+  color: var(--dark-color);
+  border: 1px solid #404040;
+}
+
+.windows-dark-theme .header {
+  background: rgba(45, 45, 45, 0.95);
+  border-bottom: 1px solid #404040;
+}
+
+.windows-dark-theme .modal-content {
+  background: var(--light-color);
+  color: var(--dark-color);
+}
+
+.windows-dark-theme .windows-context-menu {
+  background: #2d2d2d;
+  border: 1px solid #404040;
+  color: #ffffff;
+}
+
+.windows-dark-theme .context-menu-item:hover {
+  background-color: #404040;
+}
+
+/* Windows light theme */
+.windows-light-theme {
+  --primary-color: #FF6B35;
+  --secondary-color: #667eea;
+  --accent-color: #764ba2;
+  --dark-color: #1f2937;
+  --light-color: #f3f4f6;
+  --white: #ffffff;
+}
+
+/* Windows scrollbar styling */
+.windows ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.windows ::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 6px;
+}
+
+.windows ::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 6px;
+  border: 2px solid #f1f1f1;
+}
+
+.windows ::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+.windows-dark-theme ::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+.windows-dark-theme ::-webkit-scrollbar-thumb {
+  background: #555555;
+  border: 2px solid #2d2d2d;
+}
+
+.windows-dark-theme ::-webkit-scrollbar-thumb:hover {
+  background: #777777;
+}
+
+/* Windows-specific button styles */
+.windows .btn {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.windows .btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.windows .btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* Windows input styling */
+.windows input,
+.windows textarea,
+.windows select {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 4px;
+  border: 1px solid #d1d1d1;
+  background: #ffffff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.windows input:focus,
+.windows textarea:focus,
+.windows select:focus {
+  border-color: #0078d4;
+  box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
+  outline: none;
+}
+
+.windows-dark-theme input,
+.windows-dark-theme textarea,
+.windows-dark-theme select {
+  background: #2d2d2d;
+  border-color: #404040;
+  color: #ffffff;
+}
+
+.windows-dark-theme input:focus,
+.windows-dark-theme textarea:focus,
+.windows-dark-theme select:focus {
+  border-color: #0078d4;
+  box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.3);
+}
+
+/* Windows tooltip styling */
+.windows-tooltip {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 12px;
+  background: #323130;
+  color: #ffffff;
+  border: 1px solid #323130;
+  border-radius: 2px;
+  padding: 6px 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  word-wrap: break-word;
+}
+
+/* Windows notification styling */
+.windows-notification {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #ffffff;
+  border: 1px solid #e1e1e1;
+  border-left: 4px solid var(--primary-color);
+  border-radius: 2px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  margin-bottom: 8px;
+  max-width: 400px;
+}
+
+.windows-dark-theme .windows-notification {
+  background: #2d2d2d;
+  border-color: #404040;
+  color: #ffffff;
+}
+
+/* Windows progress bar */
+.windows-progress-bar {
+  height: 4px;
+  background: #e1e1e1;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.windows-progress-bar-fill {
+  height: 100%;
+  background: var(--primary-color);
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+/* Windows-specific animations */
+.windows .hardware-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Windows modal styling */
+.windows .modal {
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.windows .modal-content {
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Windows-specific card styling */
+.windows .card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+.windows .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Windows header styling */
+.windows .header {
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Windows sidebar styling */
+.windows .sidebar {
+  background: rgba(255, 255, 255, 0.95);
+  border-right: 1px solid #e1e1e1;
+  backdrop-filter: blur(10px);
+}
+
+.windows-dark-theme .sidebar {
+  background: rgba(45, 45, 45, 0.95);
+  border-right: 1px solid #404040;
+}
+
+/* Windows-specific responsive design */
+@media (min-width: 1200px) {
+  .windows .container {
+    max-width: 1400px;
+  }
+  
+  .windows .grid-3 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Windows high DPI optimization */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .windows {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Windows touch device optimization */
+@media (pointer: coarse) {
+  .windows .btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .windows .context-menu-item {
+    min-height: 44px;
+    padding: 12px 16px;
+  }
+}
+
+/* Windows keyboard navigation */
+.windows .btn:focus,
+.windows input:focus,
+.windows textarea:focus,
+.windows select:focus {
+  outline: 2px solid #0078d4;
+  outline-offset: 2px;
+}
+
+/* Windows older hardware optimizations */
+.older-hardware .video-container video {
+  transform: scale(0.9);
+  filter: contrast(0.95);
+}
+
+.older-hardware .sos-button {
+  animation: none;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+.older-hardware .hardware-accelerated {
+  will-change: auto;
+}
+
+/* Windows specific loading animation */
+.windows .loading-spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: windows-spin 1s linear infinite;
+}
+
+@keyframes windows-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Windows file drop zone styling */
+.windows .file-drop-zone {
+  border: 2px dashed #0078d4;
+  background: rgba(0, 120, 212, 0.05);
+  border-radius: 8px;
+  padding: 32px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.windows .file-drop-zone:hover {
+  background: rgba(0, 120, 212, 0.1);
+  border-color: #106ebe;
+}
+
+.windows .file-drop-zone.dragover {
+  background: rgba(0, 120, 212, 0.2);
+  border-color: #106ebe;
+  transform: scale(1.02);
+}
+
+/* Windows status bar */
+.windows .status-bar {
+  background: #f3f2f1;
+  border-top: 1px solid #e1dfdd;
+  padding: 8px 16px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 12px;
+  color: #323130;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.windows-dark-theme .status-bar {
+  background: #2d2d2d;
+  border-top: 1px solid #404040;
+  color: #ffffff;
+}
+
+/* Windows specific print styles */
+@media print {
+  .windows .no-print {
+    display: none !important;
+  }
+  
+  .windows .card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+}
+
+/* Windows accessibility improvements */
+.windows .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.windows .visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}

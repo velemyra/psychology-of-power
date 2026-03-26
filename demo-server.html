@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПСИХОЛОГІЯ СИЛИ - Демо</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: #FFD700;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .status {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #FFD700;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .button {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        }
+        
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .camera-test {
+            margin: 30px 0;
+        }
+        
+        video {
+            width: 100%;
+            max-width: 400px;
+            height: 300px;
+            background: #000;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .error {
+            color: #FF6B6B;
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid #FF6B6B;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎥 ПСИХОЛОГІЯ СИЛИ</h1>
+        
+        <div class="status">
+            <h2>📱 Тестування камери</h2>
+            <p>Це демо сторінка для перевірки роботи камери</p>
+        </div>
+        
+        <div class="camera-test">
+            <video id="videoElement" autoplay muted></video>
+            <br>
+            <button class="button" onclick="startCamera()">🎥 Запустити камеру</button>
+            <button class="button" onclick="stopCamera()">⏹️ Зупинити камеру</button>
+        </div>
+        
+        <div id="status" class="info">
+            <h3>📊 Статус:</h3>
+            <p>Натисніть "Запустити камеру" для тестування</p>
+        </div>
+        
+        <div id="error" class="error" style="display: none;">
+            <h3>❌ Помилка:</h3>
+            <p id="errorMessage"></p>
+        </div>
+        
+        <div class="info">
+            <h3>🔧 Інструкції:</h3>
+            <p>1. Натисніть "Запустити камеру"</p>
+            <p>2. Надайте дозвіл на камеру</p>
+            <p>3. Перевірте чи працює відео</p>
+            <p>4. Якщо працює - основний додаток також буде працювати</p>
+        </div>
+        
+        <div class="info">
+            <h3>📱 Для iPhone:</h3>
+            <p>• Потрібен HTTPS протокол</p>
+            <p>• Надайте дозвіл в налаштуваннях iOS</p>
+            <p>• Перевірте чи камера не використовується іншими додатками</p>
+        </div>
+    </div>
+    
+    <script>
+        let stream = null;
+        const video = document.getElementById('videoElement');
+        const status = document.getElementById('status');
+        const error = document.getElementById('error');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        async function startCamera() {
+            try {
+                console.log('🎥 Запуск камери...');
+                status.innerHTML = '<h3>📊 Статус:</h3><p>Запускаю камеру...</p>';
+                error.style.display = 'none';
+                
+                // Check if mediaDevices is available
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error('getUserMedia не підтримується в цьому браузері');
+                }
+                
+                // List available devices
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                console.log('📹 Доступні пристрої:', devices);
+                
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                console.log('📹 Відео пристрої:', videoDevices);
+                
+                if (videoDevices.length === 0) {
+                    throw new Error('На цьому пристрої не знайдено жодної камери');
+                }
+                
+                // Try to get camera access
+                const constraints = {
+                    video: {
+                        facingMode: 'user',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false
+                };
+                
+                console.log('🎥 Запитую доступ з обмеженнями:', constraints);
+                
+                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                console.log('✅ Доступ до камери отримано!');
+                
+                video.srcObject = stream;
+                await video.play();
+                
+                status.innerHTML = '<h3>📊 Статус:</h3><p>✅ Камера працює!</p><p>🎥 Відео активне</p>';
+                
+            } catch (err) {
+                console.error('❌ Помилка камери:', err);
+                error.style.display = 'block';
+                errorMessage.textContent = err.message;
+                
+                // Provide specific advice based on error
+                if (err.name === 'NotAllowedError') {
+                    errorMessage.textContent += '\n\n💡 Рішення: Надайте дозвіл на камеру в налаштуваннях браузера';
+                } else if (err.name === 'NotFoundError') {
+                    errorMessage.textContent += '\n\n💡 Рішення: Перевірте чи є камера на пристрої';
+                } else if (err.message.includes('HTTPS')) {
+                    errorMessage.textContent += '\n\n💡 Рішення: Використовуйте HTTPS протокол';
+                }
+            }
+        }
+        
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+                video.srcObject = null;
+                status.innerHTML = '<h3>📊 Статус:</h3><p>⏹️ Камера зупинена</p>';
+            }
+        }
+        
+        // Log browser info
+        console.log('🌐 User Agent:', navigator.userAgent);
+        console.log('🔒 HTTPS:', window.isSecureContext);
+        console.log('🌐 Location:', location.protocol + '//' + location.hostname);
+    </script>
+</body>
+</html>
