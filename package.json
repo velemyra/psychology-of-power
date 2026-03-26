@@ -1,7 +1,7 @@
 {
   "name": "psychology-of-power",
   "version": "1.0.0",
-  "description": "PWA додаток для захисту прав водіїв",
+  "description": "PWA додаток для захисту прав водіїв - Vercel Pro Ready",
   "main": "index.html",
   "type": "module",
   "scripts": {
