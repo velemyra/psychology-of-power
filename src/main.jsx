@@ -1,30 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import App from './App.jsx'
+import AppTest from './App-test'
 import './index.css'
-
-// Import compatibility utilities
-import './utils/ios-compatibility.js'
-import './utils/windows-compatibility.js'
-
-// Service Worker disabled for local development
-// if ('serviceWorker' in navigator) {
-//   window.addEventListener('load', () => {
-//     navigator.serviceWorker.register('/sw.js')
-//       .then((registration) => {
-//         console.log('SW registered: ', registration)
-//       })
-//       .catch((registrationError) => {
-//         console.log('SW registration failed: ', registrationError)
-//       })
-//   })
-// }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AppMinimal />
-    </BrowserRouter>
-  </React.StrictMode>
+    <AppTest />
+  </React.StrictMode>,
 )
